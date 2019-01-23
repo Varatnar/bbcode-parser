@@ -1,0 +1,41 @@
+{
+  "name": "@varatnar/bbcode-parser",
+  "version": "0.1.0",
+  "description": "",
+  "keywords": [
+    "javascript",
+    "typescript"
+  ],
+  "main": "bin/bbcode-parser.js",
+  "types": "bin/bbcode-parser.d.ts",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha -r ts-node/register tests/**/*.spec.ts"
+  },
+  "author": "Philippe Leclerc",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Varatnar/bbcode-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Varatnar/bbcode-parser/issues"
+  },
+  "homepage": "https://github.com/Varatnar/bbcode-parser",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.11.4",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "@varatnar/oikos-doru": "^0.5.0"
+  }
+}

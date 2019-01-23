@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "es6",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "sourceMap": false,
+    "outDir": "./bin",
+    "declaration": true,
+    "module": "commonjs",
+    "lib": [
+      "es2016",
+      "dom"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
