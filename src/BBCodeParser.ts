@@ -62,6 +62,13 @@ export class BBCodeParser {
     }
 
     public parse(bbcodeInput: string): string {
+
+        if (!bbcodeInput || bbcodeInput === "") {
+            return "";
+        }
+
+        bbcodeInput = bbcodeInput.replace(/(\r\n|\n|\r|↵)/gm, "<br />");
+
         const tokenaziedInput = this.tokenify(bbcodeInput);
 
         const tree = this.treeify(tokenaziedInput);
@@ -179,7 +186,7 @@ export class BBCodeParser {
     private retrieveTagForToken(token: BBCodeToken): BBCodeTag {
 
         for (const bbcode of this.bbCodeLibrary) {
-            if (token.name === bbcode.tagName) {
+            if (token.name.toLocaleLowerCase() === bbcode.tagName.toLocaleLowerCase()) {
                 return bbcode;
             }
         }

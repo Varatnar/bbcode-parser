@@ -104,5 +104,23 @@ describe("BBCodeParser", () => {
 
             expect(parser.parse(data)).to.equal(data);
         });
+
+        it("should not loop to crash", () => {
+            const data = "[b][u]English[/u][/b]\n" +
+                "↵It is the summary of the story of a bride whose love attack power is 255 but her defensive power is 0.\n" +
+                "↵\n" +
+                "↵[b][u]Portuguese / Portugu&ecirc;s[/u][/b]\n" +
+                "↵&Eacute; um resumo da hist&oacute;ria de uma noiva que tem o poder de ataque de amor n&iacute;vel 255, mas a poder de defesa dela &eacute; 0.\n" +
+                "↵\n" +
+                "↵[b][u]Italian[/u][/b]\n" +
+                "↵Questo &egrave; il riassunto di una sposa il cui potere d'attacco d'amore &egrave; 255 ma quello difensivo &egrave; 0.\n" +
+                "↵\n" +
+                "↵[B]Links:[/B]\n" +
+                "↵[*][url=https://twitter.com/hosimaki]Author's Twitter[/url]";
+
+            const expected = "<strong><u>English</u></strong><br /><br />It is the summary of the story of a bride whose love attack power is 255 but her defensive power is 0.<br /><br /><br /><br /><strong><u>Portuguese / Portugu&ecirc;s</u></strong><br /><br />&Eacute; um resumo da hist&oacute;ria de uma noiva que tem o poder de ataque de amor n&iacute;vel 255, mas a poder de defesa dela &eacute; 0.<br /><br /><br /><br /><strong><u>Italian</u></strong><br /><br />Questo &egrave; il riassunto di una sposa il cui potere d'attacco d'amore &egrave; 255 ma quello difensivo &egrave; 0.<br /><br /><br /><br /><strong>Links:</strong><br /><br />[*]<a href='https://twitter.com/hosimaki' target='_blank'>Author's Twitter</a>";
+
+            expect(parser.parse(data)).to.equal(expected);
+        });
     });
 });
