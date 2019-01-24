@@ -131,10 +131,6 @@ export class BBCodeParser {
 
         } while (treeArray.length > 0);
 
-        tree.forEach((element) => {
-            console.log(element.toString());
-        });
-
         return tree;
     }
 
@@ -144,10 +140,8 @@ export class BBCodeParser {
 
         for (const branch of tree) {
             if (branch.getData() instanceof BBCodeToken) {
-                console.log((branch.getData() as BBCodeToken).transform());
                 html += (branch.getData() as BBCodeToken).transform();
             } else {
-                console.log(branch.getData());
                 html += branch.getData();
             }
         }
