@@ -36,7 +36,6 @@ export class BBCodeParser {
             addToOpenTag: ["target='_blank'"],
         }));
 
-        // todo: fix img tag -> content should be in src of img html
         tags.push(BBCodeTag.withNonSimpleTag("img", {
             attributeLocation: "src",
             specialRules: {
