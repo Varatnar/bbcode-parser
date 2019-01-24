@@ -19,19 +19,4 @@ export class BBCodeTag {
         this.tag = tag;
         this.transform = transform;
     }
-
 }
-
-(() => {
-
-    const data = "[url=coolUrl]thisIsMyUrl[test]plusMore[/test][/url]";
-
-    const URL = new BBCodeTag("url", (link) => {
-        console.log(link);
-    });
-
-    const parser = BBCodeParser.withDefault();
-
-    parser.parse(data);
-
-})();

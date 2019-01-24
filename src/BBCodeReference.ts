@@ -1,3 +1,4 @@
+// todo: replace with variable export rather than class export
 export class BBCodeReference {
     public static BBCODE_IDENTIFIER = {
         START: "[",
