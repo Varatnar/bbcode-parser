@@ -4,7 +4,10 @@
   "description": "",
   "keywords": [
     "javascript",
-    "typescript"
+    "typescript",
+    "bbcode",
+    "html",
+    "parser"
   ],
   "main": "bin/bbcode-parser.js",
   "types": "bin/bbcode-parser.d.ts",
