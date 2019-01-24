@@ -11,6 +11,8 @@ export class BBCodeParser {
         const URL = BBCodeTag.withSimpleTag("url");
         tags.push(URL);
 
+        tags.push(BBCodeTag.withSimpleTag("test"));
+
         return new BBCodeParser(tags);
     }
 
@@ -22,9 +24,12 @@ export class BBCodeParser {
 
     public parse(bbcodeInput: string): string {
         const tokenaziedInput = this.tokenify(bbcodeInput);
+
+        this.validateTokens(tokenaziedInput);
+
         const tree = this.treeify(tokenaziedInput);
 
-        // console.log(this.validate(tree));
+        this.walk(tree);
 
         return "";
     }
@@ -59,6 +64,18 @@ export class BBCodeParser {
         return tokens;
     }
 
+    private validateTokens(tokens: Array<BBCodeToken | string>) {
+
+        for (const token of tokens) {
+            if (!(token instanceof BBCodeToken)) {
+                continue; // not a token, moving on
+            }
+
+            token.tag = this.similyMap(token);
+        }
+
+    }
+
     private treeify(treeArray: Array<BBCodeToken | string>): TreeElement<BBCodeToken | string> {
 
         const tree = new TreeElement<any>("");
@@ -86,6 +103,27 @@ export class BBCodeParser {
         });
 
         return tree;
+    }
+
+    private walk(tree: TreeElement<BBCodeToken | string>): void {
+        for (const branch of tree) {
+            if (branch.getData() instanceof BBCodeToken) {
+                console.log((branch.getData() as BBCodeToken).transform());
+            } else {
+                console.log(branch.getData());
+            }
+        }
+    }
+
+    private similyMap(token: BBCodeToken): BBCodeTag {
+
+        for (const bbcode of this.bbCodeLibrary) {
+            if (token.name === bbcode.tag) {
+                return bbcode;
+            }
+        }
+
+        throw new Error(`Could not find [${token.name}] in current libraries.`);
     }
 
     // private validate(input: TreeElement<BBCodeToken | string>): boolean {

@@ -1,3 +1,5 @@
+import { BBCodeTag } from "./BBCodeTag";
+
 export class BBCodeToken {
 
     public static withStarting(name: string, attribute?: string) {
@@ -13,6 +15,7 @@ export class BBCodeToken {
     public starting: boolean;
     public needClosing: boolean;
     public attribute?: string;
+    public tag: BBCodeTag;
 
     private constructor(name: string, ending: boolean, needClosing?: boolean, attribute?: string) {
         this.name = name;
@@ -26,6 +29,10 @@ export class BBCodeToken {
         if (needClosing) {
             this.needClosing = needClosing;
         }
+    }
+
+    public transform(): string {
+        return this.tag.transform(this.ending, this.attribute);
     }
 
     public toString() {
