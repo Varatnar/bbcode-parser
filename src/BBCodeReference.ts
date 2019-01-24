@@ -9,7 +9,7 @@ export const HTML_IDENTIFER = {
     END: ">",
 };
 
-export const TAG_REGEX: RegExp = /\[(\/)?(\w+)(?:=(.+?(?=])))?]|(.+?(?=\[))/g;
+export const TAG_REGEX: RegExp = /\[(\/)?(\w+)(?:=(.+?(?=])))?]|(.+?(?=\[)|.+)/g;
 
 export const TAG_REGEX_DATA = {
     ENDING: 1,
