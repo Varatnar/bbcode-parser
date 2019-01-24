@@ -29,9 +29,7 @@ export class BBCodeParser {
 
         const tree = this.treeify(tokenaziedInput);
 
-        this.walk(tree);
-
-        return "";
+        return this.convert(tree);
     }
 
     private tokenify(input: string): Array<BBCodeToken | string> {
@@ -71,7 +69,7 @@ export class BBCodeParser {
                 continue; // not a token, moving on
             }
 
-            token.tag = this.similyMap(token);
+            token.tag = this.mapTokenToTag(token);
         }
 
     }
@@ -105,17 +103,24 @@ export class BBCodeParser {
         return tree;
     }
 
-    private walk(tree: TreeElement<BBCodeToken | string>): void {
+    private convert(tree: TreeElement<BBCodeToken | string>): string {
+
+        let html: string = "";
+
         for (const branch of tree) {
             if (branch.getData() instanceof BBCodeToken) {
                 console.log((branch.getData() as BBCodeToken).transform());
+                html += (branch.getData() as BBCodeToken).transform();
             } else {
                 console.log(branch.getData());
+                html += branch.getData();
             }
         }
+
+        return html;
     }
 
-    private similyMap(token: BBCodeToken): BBCodeTag {
+    private mapTokenToTag(token: BBCodeToken): BBCodeTag {
 
         for (const bbcode of this.bbCodeLibrary) {
             if (token.name === bbcode.tag) {
@@ -125,15 +130,4 @@ export class BBCodeParser {
 
         throw new Error(`Could not find [${token.name}] in current libraries.`);
     }
-
-    // private validate(input: TreeElement<BBCodeToken | string>): boolean {
-    //     return this.validateLoop(input.getChildren());
-    // }
-
-    // private validateLoop(loopElement: Array<TreeElement<BBCodeToken | string>>): boolean {
-    //
-    //     for (const child of loopElement) {
-    //
-    //     }
-    // }
 }
