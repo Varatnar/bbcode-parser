@@ -26,7 +26,7 @@ export class BBCodeParser {
             tagOverwrite: "mark",
         }));
 
-        tags.push(BBCodeTag.withSimpleTag("sup"));
+        tags.push(BBCodeTag.withSimpleTag("sub"));
         tags.push(BBCodeTag.withSimpleTag("code")); // todo: not working as intended (what is in them will still get formatted)
 
         tags.push(BBCodeTag.withNonSimpleTag("url", {
