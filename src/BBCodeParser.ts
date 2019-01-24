@@ -11,15 +11,38 @@ export class BBCodeParser {
     public static withDefault(): BBCodeParser {
         const tags: BBCodeTag[] = [];
 
-        const URL = BBCodeTag.withNonSimpleTag("url", {
+        tags.push(BBCodeTag.withNonSimpleTag("b", {
+            tagOverwrite: "strong",
+        }));
+
+        tags.push(BBCodeTag.withNonSimpleTag("i", {
+            tagOverwrite: "em",
+        }));
+
+        tags.push(BBCodeTag.withSimpleTag("u"));
+        tags.push(BBCodeTag.withSimpleTag("s"));
+
+        tags.push(BBCodeTag.withNonSimpleTag("h", {
+            tagOverwrite: "mark",
+        }));
+
+        tags.push(BBCodeTag.withSimpleTag("sup"));
+        tags.push(BBCodeTag.withSimpleTag("code")); // todo: not working as intended (what is in them will still get formatted)
+
+        tags.push(BBCodeTag.withNonSimpleTag("url", {
             tagOverwrite: "a",
             attributeLocation: "href",
             addToOpenTag: ["target='_blank'"],
-        });
+        }));
 
-        tags.push(URL);
+        // todo: fix img tag -> content should be in src of img html
+        tags.push(BBCodeTag.withNonSimpleTag("img", {
+            attributeLocation: "src",
+        }));
 
-        tags.push(BBCodeTag.withSimpleTag("test"));
+        for (let i = 1; i < 7; i++) {
+            tags.push(BBCodeTag.withSimpleTag(`h${i}`));
+        }
 
         return new BBCodeParser(tags);
     }
