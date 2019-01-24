@@ -1,5 +1,5 @@
 import { BBCodeParser } from "./BBCodeParser";
-import { BBCodeReference } from "./BBCodeReference";
+import { HTML_IDENTIFER } from "./BBCodeReference";
 import { BBCodeTagSetting } from "./BBCodeTagSetting";
 
 /**
@@ -17,7 +17,7 @@ export class BBCodeTag {
             const closed: string = closing ? "/" : "";
             const attributeString: string = attribute ? `=${attribute}` : "";
 
-            return `${BBCodeReference.HTML_IDENTIFER.START}${closed}${tag}${attributeString}${BBCodeReference.HTML_IDENTIFER.END}`;
+            return `${HTML_IDENTIFER.START}${closed}${tag}${attributeString}${HTML_IDENTIFER.END}`;
         });
     }
 
@@ -29,7 +29,7 @@ export class BBCodeTag {
                 throw new Error("Closing tag cannot have attributes");
             }
 
-            let htmlTag: string = BBCodeReference.HTML_IDENTIFER.START;
+            let htmlTag: string = HTML_IDENTIFER.START;
 
             htmlTag += closing ? "/" : "";
 
@@ -53,7 +53,7 @@ export class BBCodeTag {
                 });
             }
 
-            htmlTag += BBCodeReference.HTML_IDENTIFER.END;
+            htmlTag += HTML_IDENTIFER.END;
 
             return htmlTag;
         });

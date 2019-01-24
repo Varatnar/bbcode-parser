@@ -1,5 +1,8 @@
 import { TreeElement } from "@varatnar/oikos-doru";
-import { BBCodeReference } from "./BBCodeReference";
+import {
+    TAG_REGEX,
+    TAG_REGEX_DATA,
+} from "./BBCodeReference";
 import { BBCodeTag } from "./BBCodeTag";
 import { BBCodeToken } from "./BBCodeToken";
 
@@ -45,7 +48,7 @@ export class BBCodeParser {
 
         // Finding all different parts/token
         do {
-            match = BBCodeReference.TAG_REGEX.exec(input);
+            match = TAG_REGEX.exec(input);
             if (match) {
                 execArray.push(match);
             }
@@ -53,13 +56,13 @@ export class BBCodeParser {
 
         // mapping to tokens
         execArray.forEach((element) => {
-            if (element[BBCodeReference.TAG_REGEX_DATA.PLAIN_TEXT]) {
-                tokens.push(element[BBCodeReference.TAG_REGEX_DATA.PLAIN_TEXT]);
+            if (element[TAG_REGEX_DATA.PLAIN_TEXT]) {
+                tokens.push(element[TAG_REGEX_DATA.PLAIN_TEXT]);
             } else {
-                if (element[BBCodeReference.TAG_REGEX_DATA.ENDING]) {
-                    tokens.push(BBCodeToken.withEnding(element[BBCodeReference.TAG_REGEX_DATA.TAG_NAME], element[BBCodeReference.TAG_REGEX_DATA.ATTRIBUTE]));
+                if (element[TAG_REGEX_DATA.ENDING]) {
+                    tokens.push(BBCodeToken.withEnding(element[TAG_REGEX_DATA.TAG_NAME], element[TAG_REGEX_DATA.ATTRIBUTE]));
                 } else {
-                    tokens.push(BBCodeToken.withStarting(element[BBCodeReference.TAG_REGEX_DATA.TAG_NAME], element[BBCodeReference.TAG_REGEX_DATA.ATTRIBUTE]));
+                    tokens.push(BBCodeToken.withStarting(element[TAG_REGEX_DATA.TAG_NAME], element[TAG_REGEX_DATA.ATTRIBUTE]));
                 }
             }
         });
