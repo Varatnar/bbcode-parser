@@ -8,7 +8,12 @@ export class BBCodeParser {
     public static withDefault() {
         const tags: BBCodeTag[] = [];
 
-        const URL = BBCodeTag.withSimpleTag("url");
+        const URL = BBCodeTag.withNonSimpleTag("url", {
+            tagOverwrite: "a",
+            attributeLocation: "href",
+            addToOpenTag: ["target='_blank'"],
+        });
+
         tags.push(URL);
 
         tags.push(BBCodeTag.withSimpleTag("test"));

@@ -1,5 +1,6 @@
 import { BBCodeParser } from "./BBCodeParser";
 import { BBCodeReference } from "./BBCodeReference";
+import { BBCodeTagSetting } from "./BBCodeTagSetting";
 
 /**
  * Member of a {@link BBCodeParser.bbCodeLibrary}
@@ -7,7 +8,7 @@ import { BBCodeReference } from "./BBCodeReference";
 export class BBCodeTag {
 
     public static withSimpleTag(tag: string) {
-        return new BBCodeTag(tag, (closing?: boolean, attribute?: string, overwrite?: string) => {
+        return new BBCodeTag(tag, (closing?: boolean, attribute?: string) => {
 
             if (closing && attribute) {
                 throw new Error("Closing tag cannot have attributes");
@@ -17,6 +18,44 @@ export class BBCodeTag {
             const attributeString: string = attribute ? `=${attribute}` : "";
 
             return `${BBCodeReference.HTML_IDENTIFER.START}${closed}${tag}${attributeString}${BBCodeReference.HTML_IDENTIFER.END}`;
+        });
+    }
+
+    public static withNonSimpleTag(tag: string, options: BBCodeTagSetting) {
+
+        return new BBCodeTag(tag, (closing?: boolean, attribute?: string) => {
+
+            if (closing && attribute) {
+                throw new Error("Closing tag cannot have attributes");
+            }
+
+            let htmlTag: string = BBCodeReference.HTML_IDENTIFER.START;
+
+            htmlTag += closing ? "/" : "";
+
+            htmlTag += options.tagOverwrite || tag;
+
+            if (!closing && attribute && options.attributeLocation) {
+                htmlTag += ` ${options.attributeLocation}='${attribute}'`;
+            } else if (!closing && (attribute || options.attributeLocation)) {
+                throw new Error("Cannot use attribute without attribute location option");
+            }
+
+            if (!closing && options.addToOpenTag) {
+                options.addToOpenTag.forEach((forcedAttribute) => {
+                    htmlTag += ` ${forcedAttribute}`;
+                });
+            }
+
+            if (closing && options.addToCloseTag) {
+                options.addToCloseTag.forEach((forcedAttribute) => {
+                    htmlTag += ` ${forcedAttribute}`;
+                });
+            }
+
+            htmlTag += BBCodeReference.HTML_IDENTIFER.END;
+
+            return htmlTag;
         });
     }
 
