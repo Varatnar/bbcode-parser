@@ -72,10 +72,16 @@ describe("BBCodeParser", () => {
         });
 
         it("should parse img code", () => {
-            const data = "[img]imgPath[/img]";
+            const data = "[img]imagePath[/img]";
             const expected = "<img src='imagePath'>";
 
             expect(parser.parse(data)).to.equal(expected);
+        });
+
+        it("should throw an error when parsing an img tag with child tags", () => {
+            const data = `[img]imgUrl[b]badContent[/b][/img]`;
+
+            expect(parser.parse.bind(parser, data)).to.throw();
         });
 
         for (let i = 1; i < 7; i++) {

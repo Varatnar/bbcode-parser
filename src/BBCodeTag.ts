@@ -1,6 +1,9 @@
 import { BBCodeParser } from "./BBCodeParser";
 import { HTML_IDENTIFER } from "./BBCodeReference";
-import { BBCodeTagSetting } from "./BBCodeTagSetting";
+import {
+    BBCodeTagSetting,
+    SpecialRules,
+} from "./BBCodeTagSetting";
 
 /**
  * Member of a {@link BBCodeParser.bbCodeLibrary}
@@ -17,7 +20,7 @@ export class BBCodeTag {
             const closed: string = closing ? "/" : "";
             const attributeString: string = attribute ? `=${attribute}` : "";
 
-            return `${HTML_IDENTIFER.START}${closed}${tag}${attributeString}${HTML_IDENTIFER.END}`;
+            return `${HTML_IDENTIFER.START}${closed}${tag}${attributeString}${HTML_IDENTIFER.END}`; // todo: awful string, change to something more readable (stringbuilder like)
         });
     }
 
@@ -56,15 +59,18 @@ export class BBCodeTag {
             htmlTag += HTML_IDENTIFER.END;
 
             return htmlTag;
-        });
+        }, options.specialRules);
     }
 
-    public tag: string;
+    public tagName: string;
 
     public transform: (closing?: boolean, attribute?: string, overwrite?: string) => string;
 
-    constructor(tag: string, transform: (closing?: boolean, attribute?: string, overwrite?: string) => any) {
-        this.tag = tag;
+    public specialRules?: SpecialRules;
+
+    constructor(tag: string, transform: (closing?: boolean, attribute?: string, overwrite?: string) => any, specialRules?: SpecialRules) {
+        this.tagName = tag;
         this.transform = transform;
+        this.specialRules = specialRules;
     }
 }

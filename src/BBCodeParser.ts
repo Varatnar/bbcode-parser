@@ -39,6 +39,10 @@ export class BBCodeParser {
         // todo: fix img tag -> content should be in src of img html
         tags.push(BBCodeTag.withNonSimpleTag("img", {
             attributeLocation: "src",
+            specialRules: {
+                contentToAttribute: true,
+                childTag: false,
+            },
         }));
 
         for (let i = 1; i < 7; i++) {
@@ -61,9 +65,9 @@ export class BBCodeParser {
     public parse(bbcodeInput: string): string {
         const tokenaziedInput = this.tokenify(bbcodeInput);
 
-        this.validateTokens(tokenaziedInput);
-
         const tree = this.treeify(tokenaziedInput);
+
+        this.validateTokenTree(tree);
 
         return this.convert(tree);
     }
@@ -98,16 +102,39 @@ export class BBCodeParser {
         return tokens;
     }
 
-    private validateTokens(tokens: Array<BBCodeToken | string>): void {
+    private validateTokenTree(tokenTree: TreeElement<BBCodeToken | string>): void {
 
-        for (const token of tokens) {
-            if (!(token instanceof BBCodeToken)) {
+        for (const token of tokenTree) {
+            if (!(token.getData() instanceof BBCodeToken)) {
                 continue; // not a token, moving on
             }
 
-            token.tag = this.mapTokenToTag(token);
-        }
+            const tag = this.retrieveTagForToken((token.getData() as BBCodeToken));
 
+            // todo: should this logic stay here ?
+            if (tag.specialRules) {
+                if (!tag.specialRules.childTag) {
+                    token.getChildren().forEach((child) => {
+                        if (child.getData() instanceof BBCodeToken) {
+                            throw new Error(`Token [${token.toString()} of type ${tag.tagName} cannot have children token !`);
+                        }
+                    });
+                }
+
+                if (tag.specialRules.contentToAttribute) {
+                    (token.getData() as BBCodeToken).attribute = "";
+                    token.getChildren().forEach((child) => {
+                        (token.getData() as BBCodeToken).attribute += child.getData() as string;
+                    });
+
+                    token.clearChildren(); // children should all have been used up in previous foreach, we dont want to iterate through them again in main loop
+
+                    token.getParent().getChildren().pop(); // if the content is in an attribute, there should be no close tag, removing it from token list
+                }
+            }
+
+            (token.getData() as BBCodeToken).tag = tag;
+        }
     }
 
     private treeify(treeArray: Array<BBCodeToken | string>): TreeElement<BBCodeToken | string> {
@@ -150,10 +177,10 @@ export class BBCodeParser {
         return html;
     }
 
-    private mapTokenToTag(token: BBCodeToken): BBCodeTag {
+    private retrieveTagForToken(token: BBCodeToken): BBCodeTag {
 
         for (const bbcode of this.bbCodeLibrary) {
-            if (token.name === bbcode.tag) {
+            if (token.name === bbcode.tagName) {
                 return bbcode;
             }
         }
