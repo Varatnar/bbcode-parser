@@ -2,11 +2,11 @@ import { BBCodeTag } from "./BBCodeTag";
 
 export class BBCodeToken {
 
-    public static withStarting(name: string, attribute?: string) {
+    public static withStarting(name: string, attribute?: string): BBCodeToken {
         return new BBCodeToken(name, false, true, attribute);
     }
 
-    public static withEnding(name: string, attribute?: string) {
+    public static withEnding(name: string, attribute?: string): BBCodeToken {
         return new BBCodeToken(name, true, true, attribute);
     }
 
@@ -35,7 +35,7 @@ export class BBCodeToken {
         return this.tag.transform(this.ending, this.attribute);
     }
 
-    public toString() {
+    public toString(): string {
         return JSON.stringify(this);
     }
 }

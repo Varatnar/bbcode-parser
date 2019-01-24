@@ -8,7 +8,7 @@ import { BBCodeToken } from "./BBCodeToken";
 
 export class BBCodeParser {
 
-    public static withDefault() {
+    public static withDefault(): BBCodeParser {
         const tags: BBCodeTag[] = [];
 
         const URL = BBCodeTag.withNonSimpleTag("url", {
@@ -28,6 +28,10 @@ export class BBCodeParser {
 
     constructor(tags: BBCodeTag[]) {
         this.bbCodeLibrary = tags;
+    }
+
+    public addBBcodeTagToLibrary(tag: BBCodeTag): void {
+        this.bbCodeLibrary.push(tag);
     }
 
     public parse(bbcodeInput: string): string {
@@ -70,7 +74,7 @@ export class BBCodeParser {
         return tokens;
     }
 
-    private validateTokens(tokens: Array<BBCodeToken | string>) {
+    private validateTokens(tokens: Array<BBCodeToken | string>): void {
 
         for (const token of tokens) {
             if (!(token instanceof BBCodeToken)) {

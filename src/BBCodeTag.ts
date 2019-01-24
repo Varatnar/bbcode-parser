@@ -7,7 +7,7 @@ import { BBCodeTagSetting } from "./BBCodeTagSetting";
  */
 export class BBCodeTag {
 
-    public static withSimpleTag(tag: string) {
+    public static withSimpleTag(tag: string): BBCodeTag {
         return new BBCodeTag(tag, (closing?: boolean, attribute?: string) => {
 
             if (closing && attribute) {
@@ -21,7 +21,7 @@ export class BBCodeTag {
         });
     }
 
-    public static withNonSimpleTag(tag: string, options: BBCodeTagSetting) {
+    public static withNonSimpleTag(tag: string, options: BBCodeTagSetting): BBCodeTag {
 
         return new BBCodeTag(tag, (closing?: boolean, attribute?: string) => {
 
