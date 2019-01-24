@@ -92,5 +92,17 @@ describe("BBCodeParser", () => {
                 expect(parser.parse(data)).to.equal(expected);
             });
         }
+
+        it("should not convert code that are not part of the library", () => {
+            const data = `[falseTag]content[/falseTag]`;
+
+            expect(parser.parse(data)).to.equal(data);
+        });
+
+        it("should not convert code with attribute that are not part of the library", () => {
+            const data = `[falseTag=attribute]content[/falseTag]`;
+
+            expect(parser.parse(data)).to.equal(data);
+        });
     });
 });

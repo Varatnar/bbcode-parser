@@ -111,7 +111,7 @@ export class BBCodeParser {
             const tag = this.retrieveTagForToken((token.getData() as BBCodeToken));
 
             // todo: should this logic stay here ?
-            if (tag.specialRules) {
+            if (tag && tag.specialRules) {
                 if (!tag.specialRules.childTag) {
                     token.getChildren().forEach((child) => {
                         if (child.getData() instanceof BBCodeToken) {
@@ -184,6 +184,7 @@ export class BBCodeParser {
             }
         }
 
-        throw new Error(`Could not find [${token.name}] in current libraries.`);
+        console.warn(`Could not find [${token.name}] in current libraries.`);
+        return null;
     }
 }

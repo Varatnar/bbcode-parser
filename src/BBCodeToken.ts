@@ -1,3 +1,4 @@
+import { BBCODE_IDENTIFIER } from "./BBCodeReference";
 import { BBCodeTag } from "./BBCodeTag";
 
 export class BBCodeToken {
@@ -32,6 +33,18 @@ export class BBCodeToken {
     }
 
     public transform(): string {
+
+        if (!this.tag) {
+
+            let unchangedTag: string = BBCODE_IDENTIFIER.START;
+            unchangedTag += this.ending ? "/" : "";
+            unchangedTag += this.name;
+            unchangedTag += this.attribute ? `=${this.attribute}` : "";
+            unchangedTag += BBCODE_IDENTIFIER.END;
+
+            return unchangedTag;
+        }
+
         return this.tag.transform(this.ending, this.attribute);
     }
 
