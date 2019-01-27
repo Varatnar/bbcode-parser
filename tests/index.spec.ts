@@ -144,8 +144,8 @@ describe("BBCodeParser", () => {
         });
 
         it("should properly parse input with text after a tag", () => {
-            const data = "[b]bold[/b]some random text before a tag";
-            const expected = "<strong>bold</strong>some random text before a tag";
+            const data = "[b]bold[/b]some random text after a tag";
+            const expected = "<strong>bold</strong>some random text after a tag";
 
             expect(parser.parse(data)).to.equal(expected);
         });
