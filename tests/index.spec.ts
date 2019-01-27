@@ -71,6 +71,13 @@ describe("BBCodeParser", () => {
             expect(parser.parse(data)).to.equal(expected);
         });
 
+        it("should parse link code with no property", () => {
+            const data = "[url]coolUrl[/url]";
+            const expected = "<a href='coolUrl' target='_blank'>coolUrl</a>";
+
+            expect(parser.parse(data)).to.equal(expected);
+        });
+
         it("should parse img code", () => {
             const data = "[img]imagePath[/img]";
             const expected = "<img src='imagePath'>";
@@ -105,7 +112,7 @@ describe("BBCodeParser", () => {
             expect(parser.parse(data)).to.equal(data);
         });
 
-        it("should not loop to crash", () => {
+        it("should properly parse long complex input", () => {
             const data = "[b][u]English[/u][/b]\n" +
                 "↵It is the summary of the story of a bride whose love attack power is 255 but her defensive power is 0.\n" +
                 "↵\n" +
@@ -122,5 +129,26 @@ describe("BBCodeParser", () => {
 
             expect(parser.parse(data)).to.equal(expected);
         });
+
+        it("should properly parse input with no tags", () => {
+            const data = "some random text with no tags";
+
+            expect(parser.parse(data)).to.equal(data);
+        });
+
+        it("should properly parse input with text before a tag", () => {
+            const data = "some random text before a tag[b]bold[/b]";
+            const expected = "some random text before a tag<strong>bold</strong>";
+
+            expect(parser.parse(data)).to.equal(expected);
+        });
+
+        it("should properly parse input with text after a tag", () => {
+            const data = "[b]bold[/b]some random text before a tag";
+            const expected = "<strong>bold</strong>some random text before a tag";
+
+            expect(parser.parse(data)).to.equal(expected);
+        });
+
     });
 });

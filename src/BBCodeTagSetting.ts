@@ -11,4 +11,5 @@ export interface SpecialRules {
     contentToAttribute?: boolean; // will not add a close tag
     childTag?: boolean;
     noCloseTag?: boolean; // list
+    attributeCanBeContent?: boolean;
 }

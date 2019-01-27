@@ -34,6 +34,10 @@ export class BBCodeParser {
             tagOverwrite: "a",
             attributeLocation: "href",
             addToOpenTag: ["target='_blank'"],
+            specialRules: {
+                childTag: false,
+                attributeCanBeContent: true,
+            },
         }));
 
         tags.push(BBCodeTag.withNonSimpleTag("img", {
@@ -124,6 +128,13 @@ export class BBCodeParser {
                         if (child.getData() instanceof BBCodeToken) {
                             throw new Error(`Token [${token.toString()} of type ${tag.tagName} cannot have children token !`);
                         }
+                    });
+                }
+
+                if ((token.getData() as BBCodeToken).starting && tag.specialRules.attributeCanBeContent && !(token.getData() as BBCodeToken).attribute) {
+                    (token.getData() as BBCodeToken).attribute = "";
+                    token.getChildren().forEach((child) => {
+                        (token.getData() as BBCodeToken).attribute += child.getData() as string;
                     });
                 }
 
