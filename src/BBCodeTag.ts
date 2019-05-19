@@ -1,9 +1,6 @@
 import { BBCodeParser } from "./BBCodeParser";
 import { HTML_IDENTIFER } from "./BBCodeReference";
-import {
-    BBCodeTagSetting,
-    SpecialRules,
-} from "./BBCodeTagSetting";
+import { BBCodeTagSetting, SpecialRules } from "./BBCodeTagSetting";
 
 /**
  * Member of a {@link BBCodeParser.bbCodeLibrary}

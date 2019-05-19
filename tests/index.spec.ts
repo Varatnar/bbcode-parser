@@ -150,5 +150,30 @@ describe("BBCodeParser", () => {
             expect(parser.parse(data)).to.equal(expected);
         });
 
+        it("should properly parse line tag", () => {
+            const data = "1952: 1st Honkai Eruption in Berlin - 2000: 2nd Honkai Eruption in Siberia - 2014: Honkai Outbreak in Nagazora\n" +
+                "↵\n" +
+                "↵Honkai is a corrupting force that manifests itself as supernatural disasters, monstrous creatures, plagues, and Herrschers who can bend physical laws on a whim. Human civilization has been at war with the Honkai since the very beginning. The Valkyries are the mightiest warriors of humanity. They are our only hope.\n" +
+                "↵\n" +
+                "↵The definitive source of lore, background, and epic saga of Honkai Impact 3rd, a 3D anime-style ARPG game developed and published by miHoYo.\n" +
+                "↵\n" +
+                "↵[url=https://mangadex.org/manga/26804/honkai-impact-3rd-mystery-of-stigmata]# Book 1003 = Mystery of Stigmata[/url]\t\n" +
+                "↵[url=https://mangadex.org/manga/26358/honkai-impact-3-moon-shadow]# Book 1008 = Moon Shadow[/url]\t\t[/hr]\t\n" +
+                "↵[hr]Side Story :\n" +
+                "↵[url=https://mangadex.org/manga/23219/honkai-impact-3-violet-sea-story]# Book 1004 = Violet Sea Tales[/url]\t\t\t\n" +
+                "↵[url=https://mangadex.org/manga/15560/guns-girl-schooldayz-ex]# Book 1005 = Dark Sakura Tales |  Guns Girl SchoolDayZ EX - Sakura Arc [/url]\n" +
+                "↵[url=https://www.mangadex.org/manga/26186/honkai-impact-3-purple-kite-s-tales]# Book 1009 = Purple Kite's Tales[/url]\t\t\n" +
+                "↵[url=https://mangadex.org/title/31991/honkai-impact-3rd-secret-of-the-god-keys]# Book 1010 = Secret of the God Keys[/url]\t\t\n" +
+                "↵[url=https://mangadex.org/title/30935/honkai-impact-3rd-2nd-lawman]# Book 1012 = 2nd Herrscher/Lawman\t[/url]\t[/hr]\n" +
+                "↵[hr]Spin-off :\n" +
+                "↵[url=https://www.mangadex.org/manga/26185/honkai-impact-3-when-kiana-play-honkai-impact]# Book 1011 = When Kiana Play Honkai Impact[/url]\n" +
+                "↵[url=https://mangadex.org/manga/26179/honkai-impact-3-valkyries-dining-escapades]# Book 1013 = Valkyries' Dining Escapades[/url][/hr]\n" +
+                "↵[url=https://mangadex.org/title/30931/honkai-impact-3rd-summer-memories]# Book 1014 = Summer Memories [/url]\"\n";
+
+            const expected = "1952: 1st Honkai Eruption in Berlin - 2000: 2nd Honkai Eruption in Siberia - 2014: Honkai Outbreak in Nagazora<br /><br /><br /><br />Honkai is a corrupting force that manifests itself as supernatural disasters, monstrous creatures, plagues, and Herrschers who can bend physical laws on a whim. Human civilization has been at war with the Honkai since the very beginning. The Valkyries are the mightiest warriors of humanity. They are our only hope.<br /><br /><br /><br />The definitive source of lore, background, and epic saga of Honkai Impact 3rd, a 3D anime-style ARPG game developed and published by miHoYo.<br /><br /><br /><br /><a href='https://mangadex.org/manga/26804/honkai-impact-3rd-mystery-of-stigmata' target='_blank'># Book 1003 = Mystery of Stigmata</a>\t<br /><br /><a href='https://mangadex.org/manga/26358/honkai-impact-3-moon-shadow' target='_blank'># Book 1008 = Moon Shadow</a>\t\t</hr>\t<br /><br /><hr>Side Story :<br /><br /><a href='https://mangadex.org/manga/23219/honkai-impact-3-violet-sea-story' target='_blank'># Book 1004 = Violet Sea Tales</a>\t\t\t<br /><br /><a href='https://mangadex.org/manga/15560/guns-girl-schooldayz-ex' target='_blank'># Book 1005 = Dark Sakura Tales |  Guns Girl SchoolDayZ EX - Sakura Arc </a><br /><br /><a href='https://www.mangadex.org/manga/26186/honkai-impact-3-purple-kite-s-tales' target='_blank'># Book 1009 = Purple Kite's Tales</a>\t\t<br /><br /><a href='https://mangadex.org/title/31991/honkai-impact-3rd-secret-of-the-god-keys' target='_blank'># Book 1010 = Secret of the God Keys</a>\t\t<br /><br /><a href='https://mangadex.org/title/30935/honkai-impact-3rd-2nd-lawman' target='_blank'># Book 1012 = 2nd Herrscher/Lawman\t</a>\t</hr><br /><br /><hr>Spin-off :<br /><br /><a href='https://www.mangadex.org/manga/26185/honkai-impact-3-when-kiana-play-honkai-impact' target='_blank'># Book 1011 = When Kiana Play Honkai Impact</a><br /><br /><a href='https://mangadex.org/manga/26179/honkai-impact-3-valkyries-dining-escapades' target='_blank'># Book 1013 = Valkyries' Dining Escapades</a></hr><br /><br /><a href='https://mangadex.org/title/30931/honkai-impact-3rd-summer-memories' target='_blank'># Book 1014 = Summer Memories </a>\"<br />";
+
+            expect(parser.parse(data)).to.equal(expected);
+        });
+
     });
 });

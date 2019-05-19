@@ -1,8 +1,5 @@
 import { TreeElement } from "@varatnar/oikos-doru";
-import {
-    TAG_REGEX,
-    TAG_REGEX_DATA,
-} from "./BBCodeReference";
+import { TAG_REGEX, TAG_REGEX_DATA } from "./BBCodeReference";
 import { BBCodeTag } from "./BBCodeTag";
 import { BBCodeToken } from "./BBCodeToken";
 
@@ -47,6 +44,10 @@ export class BBCodeParser {
                 childTag: false,
             },
         }));
+
+        // TODO: Realised I needed this tag after encountering some very poorly formatted bbcode
+        // TODO: Look at test to see a better way to implement this, it shouldn't have children...
+        tags.push(BBCodeTag.withSimpleTag("hr"));
 
         for (let i = 1; i < 7; i++) {
             tags.push(BBCodeTag.withSimpleTag(`h${i}`));
@@ -165,7 +166,7 @@ export class BBCodeParser {
 
             if (element instanceof BBCodeToken) {
                 if (element.ending) {
-                    currentTreeElement = currentTreeElement.getParent();
+                    currentTreeElement = currentTreeElement.getDepth() === 0 ? currentTreeElement : currentTreeElement.getParent();
                     currentTreeElement.addDataChild(element);
                 } else {
                     currentTreeElement = currentTreeElement.addDataChild(element);
