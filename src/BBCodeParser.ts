@@ -120,7 +120,7 @@ export class BBCodeParser {
                 continue; // not a token, moving on
             }
 
-            const tag = this.retrieveTagForToken((token.getData() as BBCodeToken));
+            const tag = this.retrieveTagForToken(token.getData<BBCodeToken>());
 
             // todo: should this logic stay here ?
             if (tag && tag.specialRules) {
@@ -132,17 +132,17 @@ export class BBCodeParser {
                     });
                 }
 
-                if ((token.getData() as BBCodeToken).starting && tag.specialRules.attributeCanBeContent && !(token.getData() as BBCodeToken).attribute) {
-                    (token.getData() as BBCodeToken).attribute = "";
+                if (token.getData<BBCodeToken>().starting && tag.specialRules.attributeCanBeContent && !token.getData<BBCodeToken>().attribute) {
+                    token.getData<BBCodeToken>().attribute = "";
                     token.getChildren().forEach((child) => {
-                        (token.getData() as BBCodeToken).attribute += child.getData() as string;
+                        token.getData<BBCodeToken>().attribute += child.getData<string>();
                     });
                 }
 
                 if (tag.specialRules.contentToAttribute) {
-                    (token.getData() as BBCodeToken).attribute = "";
+                    token.getData<BBCodeToken>().attribute = "";
                     token.getChildren().forEach((child) => {
-                        (token.getData() as BBCodeToken).attribute += child.getData() as string;
+                        token.getData<BBCodeToken>().attribute += child.getData<string>();
                     });
 
                     token.clearChildren(); // children should all have been used up in previous foreach, we dont want to iterate through them again in main loop
@@ -151,7 +151,7 @@ export class BBCodeParser {
                 }
             }
 
-            (token.getData() as BBCodeToken).tag = tag;
+            token.getData<BBCodeToken>().tag = tag;
         }
     }
 
@@ -186,7 +186,7 @@ export class BBCodeParser {
 
         for (const branch of tree) {
             if (branch.getData() instanceof BBCodeToken) {
-                html += (branch.getData() as BBCodeToken).transform();
+                html += branch.getData<BBCodeToken>().transform();
             } else {
                 html += branch.getData();
             }

@@ -61,13 +61,15 @@ export class BBCodeTag {
 
     public tagName: string;
 
-    public transform: (closing?: boolean, attribute?: string, overwrite?: string) => string;
+    public transform: TransformFunction;
 
     public specialRules?: SpecialRules;
 
-    constructor(tag: string, transform: (closing?: boolean, attribute?: string, overwrite?: string) => any, specialRules?: SpecialRules) {
+    constructor(tag: string, transform: TransformFunction, specialRules?: SpecialRules) {
         this.tagName = tag;
         this.transform = transform;
         this.specialRules = specialRules;
     }
 }
+
+type TransformFunction = (closing?: boolean, attribute?: string, overwrite?: string) => string;
