@@ -47,7 +47,11 @@ export class BBCodeParser {
 
         // TODO: Realised I needed this tag after encountering some very poorly formatted bbcode
         // TODO: Look at test to see a better way to implement this, it shouldn't have children...
-        tags.push(BBCodeTag.withSimpleTag("hr"));
+        tags.push(BBCodeTag.withNonSimpleTag("hr", {
+            specialRules: {
+                noCloseTag: true,
+            },
+        }));
 
         for (let i = 1; i < 7; i++) {
             tags.push(BBCodeTag.withSimpleTag(`h${i}`));
@@ -124,7 +128,8 @@ export class BBCodeParser {
 
             // todo: should this logic stay here ?
             if (tag && tag.specialRules) {
-                if (!tag.specialRules.childTag) {
+                if (tag.specialRules.childTag !== undefined &&
+                    !tag.specialRules.childTag) {
                     token.getChildren().forEach((child) => {
                         if (child.getData() instanceof BBCodeToken) {
                             throw new Error(`Token [${token.toString()} of type ${tag.tagName} cannot have children token !`);
@@ -157,22 +162,22 @@ export class BBCodeParser {
 
     private treeify(treeArray: Array<BBCodeToken | string>): TreeElement<BBCodeToken | string> {
 
-        const tree = new TreeElement<any>("");
+        const tree = new TreeElement<BBCodeToken | string>("");
 
-        let currentTreeElement: TreeElement<any> = tree;
+        let currentTreeElement: TreeElement<BBCodeToken | string> = tree;
 
         do {
             const element = treeArray.shift();
 
             if (element instanceof BBCodeToken) {
                 if (element.ending) {
-                    currentTreeElement = currentTreeElement.getDepth() === 0 ? currentTreeElement : currentTreeElement.getParent();
-                    currentTreeElement.addDataChild(element);
+                    currentTreeElement = currentTreeElement.isRoot() ? currentTreeElement : currentTreeElement.getParent();
+                    currentTreeElement.addChild(element);
                 } else {
-                    currentTreeElement = currentTreeElement.addDataChild(element);
+                    currentTreeElement = currentTreeElement.addChild(element);
                 }
             } else {
-                currentTreeElement.addDataChild(element);
+                currentTreeElement.addChild(element);
             }
 
         } while (treeArray.length > 0);
@@ -186,6 +191,14 @@ export class BBCodeParser {
 
         for (const branch of tree) {
             if (branch.getData() instanceof BBCodeToken) {
+
+                if (branch.getData<BBCodeToken>().ending &&
+                    branch.getData<BBCodeToken>().tag &&
+                    branch.getData<BBCodeToken>().tag.specialRules &&
+                    branch.getData<BBCodeToken>().tag.specialRules.noCloseTag) {
+                    continue;
+                }
+
                 html += branch.getData<BBCodeToken>().transform();
             } else {
                 html += branch.getData();
