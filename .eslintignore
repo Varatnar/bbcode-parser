@@ -1,7 +1,4 @@
-.idea
 node_modules
-*.iml
-yarn-error.log
 bin
 dist
 coverage

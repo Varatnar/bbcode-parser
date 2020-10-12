@@ -1,4 +1,3 @@
-
 export interface BBCodeTagSetting {
     tagOverwrite?: string;
     attributeLocation?: string;

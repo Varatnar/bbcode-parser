@@ -1,5 +1,7 @@
 # Package name
 
+![build](https://github.com/Varatnar/bbcode-parser/workflows/build/badge.svg)
+[![codecov](https://codecov.io/gh/varatnar/bbcode-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/varatnar/bbcode-parser)
 ## Usage
 
 WIP

@@ -1,12 +1,11 @@
-
 export const BBCODE_IDENTIFIER = {
-    START: "[",
-    END: "]",
+    START: '[',
+    END: ']',
 };
 
 export const HTML_IDENTIFER = {
-    START: "<",
-    END: ">",
+    START: '<',
+    END: '>',
 };
 
 export const TAG_REGEX: RegExp = /\[(\/)?(\w+)(?:=(.+?(?=])))?]|(.+?(?=\[)|.+)/g;
